@@ -129,3 +129,53 @@ strategy: # Parallel jobs on different OS and JDK versions
    name: 'selfhosted'
 ```
 </details>
+
+
+<details>
+  <summary>Variables</summary>
+
+
+```yaml
+variables:
+  - name: someVariableName
+    value: valueOfTheVariable
+  - name: pathVersion # dont know what is this for
+    value: $[counter(0, 0)]   
+  - template: variables/variables-test.yaml # reference variables from seperate variable file
+```
+
+</details>
+
+<details>
+  <summary>Pipeline structure</summary>
+
+
+```yaml
+stage level
+job level
+
+jobs:
+- job: job1
+   pool:
+     vmImage: 'ubuntu-latest'
+   variables:
+     job_variable1: value1    # Job level variable
+   steps:
+   - bash: echo $(global_variable)
+   - bash: echo $(job_variable1)
+   - bash: echo $JOB_VARIABLE1 
+
+- job: job2
+   pool:
+     vmImage: 'ubuntu-latest'
+   variables:
+     job_variable2: value2    # this is only available in job2
+   steps:
+   - bash: echo $(global_variable)
+   - bash: echo $(job_variable2)
+   - bash: echo $GLOBAL_VARIABLE
+```
+
+</details>
+
+
