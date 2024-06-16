@@ -236,6 +236,7 @@ jobs:
     ScriptPath: $(Build.SourcesDirectory)/scripts/myscript.ps1
     azureSubscription: $(azureSubscriptionName)
     pwsh: true
+    failOnStderr: true
 
 
 # file type script type
@@ -247,6 +248,7 @@ jobs:
       Get-AzResourceGroup
     azureSubscription: $(azureSubscriptionName)
     pwsh: true
+    failOnStderr: true
 ```
 </details>
 
