@@ -1,0 +1,82 @@
+
+# Variables
+# variables: # root level
+#   global_variable: Global_Variable # this is available to all jobs
+
+# stage level
+# job level
+
+# jobs:
+# - job: job1
+#   pool:
+#     vmImage: 'ubuntu-latest'
+#   variables:
+#     job_variable1: value1    # Job level variable
+#   steps:
+#   - bash: echo $(global_variable)
+#   - bash: echo $(job_variable1)
+#   - bash: echo $JOB_VARIABLE1 
+#
+# - job: job2
+#   pool:
+#     vmImage: 'ubuntu-latest'
+#   variables:
+#     job_variable2: value2    # this is only available in job2
+#   steps:
+#   - bash: echo $(global_variable)
+#   - bash: echo $(job_variable2)
+#   - bash: echo $GLOBAL_VARIABLE
+# 
+# Multi Checkouts in a pipeline
+# ------------------------------
+# Use either checkout or uses options to checkout a different repository. If not specified it checks out the current repository.
+# steps:
+# - checkout: git://FabrikamFiber/FabrikamTools # Azure Repos Git repository in the same organization
+# - script: # Do something with that repo
+# # Or you can reference it with a uses statement in the job
+# uses:
+#   repositories: # List of referenced repositories
+#   - FabrikamTools # Repository reference to FabrikamTools
+
+
+steps:
+- script: # Do something with that repo like clone it
+jobs:
+  - job: my_first_build
+    displayName: my first build
+    steps:
+      - script: echo "Hello, world!"
+        displayName: 'Run a one-line script'
+
+# steps:
+# - task: Maven@4 # Maven task
+#   inputs:
+#      mavenPomFile: 'pom.xml'
+#      mavenOptions: '-Xmx3072m'
+#      javaHomeOption: 'JDKVersion'
+#      jdkVersionOption: '1.11'
+#      jdkArchitectureOption: 'x64'
+#      publishJUnitResults: false
+#      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#      goals: 'package'
+
+# - task: PublishCodeCoverageResults@1 # Publish code coverage results
+#   inputs:
+#     codeCoverageTool: "JaCoCo"
+#     summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/site/jacoco/jacoco.xml"
+#     reportDirectory: "$(System.DefaultWorkingDirectory)/**/site/jacoco"
+#     failIfCoverageEmpty: true
+
+# Important Commands
+# ```YAML
+# List all pipelines in an project 
+# az pipelines list -p projectName -o table 
+# az pipelines runs list -o table -p projectName
+# Show runs in table format
+# az pipelines runs show -p projectName --id runId -o table
+# Show the runs failed error message
+# az pipelines runs show -p projectName --id runId | grep message
+# ```
+
+
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#checkout-path
