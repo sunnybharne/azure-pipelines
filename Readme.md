@@ -207,4 +207,48 @@ jobs:
 </details>
 
 
+<details>
+  <summary>Tasks</summary>
+
+```yaml
+  - task: AzurePowerShell@5
+    name: bicepBuildTrigger
+    env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    inputs:
+        displayName: 'Triggering bicep build for changed files'
+        ScriptType: filePath
+        ScriptPath: $(Build.SourceDirectory)/pipelines/scripts/trigger_pipeline.ps1
+        failOnStderr: true
+        azurePowerShellVersion: "LatestVersion"
+        azureSubscription: ${{ variables.azureSubscriptionName}}
+        pwsh: true
+        ScriptArgument: > # Use this to avoid newline characters in multilines string
+            -patchVersion $(patchVersion)
+            -pipelineName "build-and-publish-module"
+            -bicepVersionFile "metadata.json"
+            -bicepFile "main.bicep"
+
+# inline script type
+- task: AzurePowerShell@5
+  inputs:
+    ScriptType: filePath
+    ScriptPath: $(Build.SourcesDirectory)/scripts/myscript.ps1
+    azureSubscription: $(azureSubscriptionName)
+    pwsh: true
+
+
+# file type script type
+- task: AzurePowerShell@5
+  inputs:
+    ScriptType: inlineScript
+    ScriptInline: |
+      Write-Host "Hello, World!"
+      Get-AzResourceGroup
+    azureSubscription: $(azureSubscriptionName)
+    pwsh: true
+```
+</details>
+
+
 
