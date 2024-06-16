@@ -178,4 +178,33 @@ jobs:
 
 </details>
 
+<details>
+  <summary>Git checkout</summary>
+
+Multi Checkouts in a pipeline
+------------------------------
+- Use either checkout or uses options to checkout a different repository. If not specified it checks out the current repository.
+
+```yaml
+steps:
+ - checkout: git://FabrikamFiber/FabrikamTools # Azure Repos Git repository in the same organization
+ - script: # Do something with that repo # Or you can reference it with a uses statement in the job
+ uses:
+   repositories: # List of referenced repositories
+   - FabrikamTools # Repository reference to FabrikamTools
+```
+
+```yaml
+jobs:
+  - job: bicep_build
+    steps:
+      - checkout: self # This step is redundant (pipelines default beheviour in first step)
+        persistCredentials: true
+        clean: true
+        fetchDepth: 0
+```
+
+</details>
+
+
 
